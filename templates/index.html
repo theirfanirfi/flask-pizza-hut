@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+#ourmenu {
+background-color: gray;
+}
+#ourmenu li {
+list-style-type: none;
+display: inline;
+margin-left:12px;
+}
+#ourmenu li a {
+color:white;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="/">Pizza Hutt</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/myorders">My order</a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cart">Cart</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top:40px;">
+    <div class="row">
+        <div class="col-md-12">
+            {% with messages = get_flashed_messages(category_filter=['success','danger'],with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                {{message}}
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <h2 align="center">Our menu</h2>
+            <ul id="ourmenu">
+                {% for m in menu %}
+                <li>
+                    <a href="/#{{m.title}}">{{m.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="margin-top:40px;">
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" action="{{url_for('add_to_cart')}}">
+                <button type="submit" class="btn btn-primary pull-right">Add to cart <span id="total">(0$)</span>
+                </button>
+                {% for m in menu %}
+                <table class="table">
+                    <h3 id="{{m.title}}" align="center" class="pull-right">
+                        {{m.title}}
+                    </h3>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Small</th>
+                        <th>Large</th>
+                        <th>Price</th>
+                        <th>Add to cart</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for n in m.menuitems %}
+                    <tr>
+                        <td>{{n.item_title}}</td>
+                        <td>{{n.small_size}}</td>
+                        <td>{{n.large_size}}</td>
+                        <td>{{n.price}}$</td>
+                        <td>
+                            <input type="checkbox" class="form-control" name="items" price="{{n.price}}"
+                                   value="{{n.id}}" onchange="calculatePrice(this);"/></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+
+                </table>
+                {% endfor %}
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+var total_price = 0;
+var total_span = document.getElementById('total');
+
+function calculatePrice(item){
+if(item.checked){
+price = item.getAttribute('price');
+total_price = total_price + parseInt(price);
+total_span.innerHTML = "";
+total_span.innerHTML = "("+total_price+"$)";
+}else if(!(item.checked && total_price <= 0)){
+total_price = total_price - price;
+total_span.innerHTML = "";
+total_span.innerHTML = "("+total_price+"$)";
+}
+}
+
+</script>
+</body>
+</html>

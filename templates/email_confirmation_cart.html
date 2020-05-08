@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+
+
+<div class="container" style="margin-top:40px;">
+    <div class="row">
+        <div class="col-md-12">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for c in cart %}
+                <tr>
+                    <td>{{c.menu_items.item_title}}</td>
+                    <td class="price">{{c.menu_items.price}}$</td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th scope="row">Total Price</th>
+                    <td>{{total_price}}$</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">Total Items</th>
+                    <td>{{total_items}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="right">
+                        <a href="http://localhost:5000/confirm" class="btn btn-primary pull-right">Confirm Order</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+</script>
+</body>
+</html>
