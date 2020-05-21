@@ -92,7 +92,8 @@ color:white;
     <div class="row">
         <div class="col-md-12">
             <form method="post" action="{{url_for('add_to_cart')}}">
-                <input type="hidden" id="tprice" name="total_price" value=""/>
+                <input type="hidden" id="tprice" name="price" value=""/>
+                <input type="hidden" id="pizza_size" name="pizza_size" value=""/>
                 <button type="submit" class="btn btn-primary pull-right">Add to cart <span id="total">(0$)</span>
                 </button>
                 {% for m in menu %}
@@ -104,21 +105,17 @@ color:white;
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
-                        <th>Price</th>
-                        <th>Add to cart</th>
+                        <th>Small ($) </th>
+                        <th>Large ($) </th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for n in m.menuitems %}
                     <tr>
                         <td>{{n.item_title}}</td>
-                        <td>{{n.small_size}}</td>
-                        <td>{{n.large_size}}</td>
-                        <td>{{n.price}}$</td>
-                        <td>
-                            <input type="checkbox" class="form-control" name="items" price="{{n.price}}"
+                        <td>${{n.small_size_price}} <input type="radio" class="form-control" name="items" pizza_size="small" price="{{n.small_size_price}}"
+                                   value="{{n.id}}" onchange="calculatePrice(this);"/></td>
+                        <td>${{n.large_size_price}} <input type="radio" class="form-control" name="items" pizza_size="large" price="{{n.large_size_price}}"
                                    value="{{n.id}}" onchange="calculatePrice(this);"/></td>
                     </tr>
                     {% endfor %}
@@ -137,22 +134,20 @@ color:white;
 <script>
 var total_price = 0;
 var total_span = document.getElementById('total');
-var total_price_field = document.getElementById('tprice');
+var cart_price = document.getElementById('tprice');
+total_price = parseInt(total_price);
+total_span.innerHTML = "("+total_price+"$)";
 
 function calculatePrice(item){
 if(item.checked){
 price = item.getAttribute('price');
-total_price = total_price + parseInt(price);
-total_span.innerHTML = "";
-total_span.innerHTML = "("+total_price+"$)";
-total_price_field.value= total_price;
-
-}else if(!(item.checked && total_price <= 0)){
-total_price = total_price - price;
-total_span.innerHTML = "";
-total_span.innerHTML = "("+total_price+"$)";
-total_price_field.value= total_price;
+p_size = item.getAttribute('pizza_size');
+document.getElementById('pizza_size').value = p_size;
+total_span.innerHTML = '$'+price;
+cart_price.value = price;
 }
+
+
 }
 
 </script>

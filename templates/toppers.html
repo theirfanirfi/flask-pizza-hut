@@ -80,19 +80,15 @@ color:white;
                         <th></th>
                         <th>Small</th>
                         <th>Large</th>
-                        <th>Price</th>
-                        <th>Add to cart</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for n in m.menuitems %}
                     <tr>
                         <td>{{n.item_title}}</td>
-                        <td>{{n.small_size}}</td>
-                        <td>{{n.large_size}}</td>
-                        <td>{{n.price}}$</td>
-                        <td>
-                            <input type="checkbox" class="form-control" name="items" price="{{n.price}}"
+                        <td>${{n.small_size_price}}   <input type="checkbox" pizza_size="small" class="form-control" name="items" price="{{n.price}}"
+                                   value="{{n.id}}" onchange="calculatePrice(this);"/> </td>
+                        <td>${{n.large_size_price}}   <input type="checkbox" pizza_size="large" class="form-control" name="items" price="{{n.price}}"
                                    value="{{n.id}}" onchange="calculatePrice(this);"/></td>
                     </tr>
                     {% endfor %}
@@ -110,10 +106,16 @@ color:white;
 
 <script>
 var total_price = {{tprice}};
+total_price = parseInt(total_price);
+limit = {{limit}};
+checked_toppers = 0;
 var total_span = document.getElementById('total');
 total_price = parseInt(total_price);
 total_span.innerHTML = "("+total_price+"$)";
+
 function calculatePrice(item){
+if(checked_toppers < limit){
+checked_toppers++;
 if(item.checked){
 price = item.getAttribute('price');
 total_price = total_price + parseInt(price);
@@ -124,6 +126,10 @@ total_price = total_price - price;
 total_span.innerHTML = "";
 total_span.innerHTML = "("+total_price+"$)";
 }
+}else {
+item.checked = false;
+}
+
 }
 
 </script>

@@ -75,11 +75,11 @@ def index():
     return render_template('index.html', menu=menu)
 
 
-# @app.route("/toppers")
-# @login_required
-# def toppers():
-#     menu = Menu.query.filter_by(is_topping=True).join(MenuItems).all()
-#     return render_template('toppers.html', menu=menu)
+@app.route("/toppers")
+@login_required
+def toppers():
+    menu = Menu.query.filter_by(is_topping=True).join(MenuItems).all()
+    return render_template('toppers.html', menu=menu)
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -144,8 +144,11 @@ def logout():
 def add_to_cart():
     user = current_user
     items = request.form.getlist('items')
-    total_price = request.form.get('total_price')
+    #return str(items)
+    price = request.form.get('price')
+    pizza_size = request.form.get('pizza_size')
     has_toppings = False
+    limit = 3
     if not (len(items) >0):
         flash('Select items first','danger')
         return redirect(request.referrer)
@@ -156,20 +159,21 @@ def add_to_cart():
             flash('Invalid item added to cart','danger')
             return redirect(request.referrer)
 
-        cart = Cart(item_id=item,user_id=user.id,menu_id=mitem.menu_id)
+        cart = Cart(item_id=item,user_id=user.id,menu_id=mitem.menu_id, price=price, size=pizza_size)
         try:
             db.session.add(cart)
             db.session.commit()
             menu = Menu.query.filter_by(id=mitem.menu_id).first()
             if menu.has_toppings:
                 has_toppings = True
+                limit = mitem.toppers_limit
         except Exception as e:
             flash('Error: '+str(e),'danger')
             return redirect(request.referrer)
 
     if has_toppings:
         menu = Menu.query.filter_by(is_topping=True).join(MenuItems).all()
-        return render_template('toppers.html',tprice=total_price, menu=menu)
+        return render_template('toppers.html', tprice=price, menu=menu, limit=limit)
     else:
         flash('Items added to cart, you can checkout now.','success')
         return redirect("/cart")
@@ -184,7 +188,7 @@ def cart():
     total_items = 0
     for c in cart:
         total_items +=1
-        total_price += c.menu_items.price
+        total_price += c.price
 
     return render_template('cart.html',cart=cart, total_price=total_price, total_items=total_items)
 

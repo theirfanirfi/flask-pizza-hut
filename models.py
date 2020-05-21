@@ -49,9 +49,9 @@ class MenuItems(db.Model):
     __tablename__ = 'menu_items'
     id = db.Column(db.Integer, primary_key=True)
     item_title = db.Column(db.String(128))
-    price = db.Column(db.Integer)
-    small_size = db.Column(db.String(20),default=0)
-    large_size = db.Column(db.String(20),default=0)
+    toppers_limit = db.Column(db.Integer)
+    small_size_price = db.Column(db.Float, nullable=False)
+    large_size_price = db.Column(db.Float, nullable=False)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'))
     cart = db.relationship('Cart', backref="menu_items", lazy='dynamic')
 
@@ -61,14 +61,18 @@ class MenuItems(db.Model):
 class Cart(db.Model):
     __tablename = 'cart'
     id = db.Column(db.Integer, primary_key=True)
+    price = db.Column(db.Float, nullable=False)
+    ordered_size = db.Column(db.String(40), nullable=False)
     item_id = db.Column(db.Integer,db.ForeignKey('menu_items.id'), default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), default=0)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'), default=0)
     checkout = db.Column(db.String(40), default="Not confirmed")
 
-    def __init__(self,item_id,user_id,menu_id):
+    def __init__(self,item_id,user_id,menu_id, price, size):
         self.item_id = item_id
         self.user_id = user_id
         self.menu_id = menu_id
+        self.price = price
+        self.ordered_size = size
 
 
