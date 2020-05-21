@@ -60,43 +60,17 @@ color:white;
     </div>
 </div>
 
-<div class="container" style="margin-top:40px;">
-    <div class="row">
-        <div class="col-md-12">
-            {% with messages = get_flashed_messages(category_filter=['success','danger'],with_categories=true) %}
-            {% if messages %}
-            {% for category, message in messages %}
-            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-                {{message}}
-            </div>
-
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <h2 align="center">Our menu</h2>
-            <ul id="ourmenu">
-                {% for m in menu %}
-                    {% if not m.is_topping %}
-                <li>
-                    <a href="/#{{m.title}}">{{m.title}}</a>
-                </li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-</div>
 
 
 <div class="container" style="margin-top:40px;">
     <div class="row">
         <div class="col-md-12">
             <form method="post" action="{{url_for('add_to_cart')}}">
-                <input type="hidden" id="tprice" name="total_price" value=""/>
-                <button type="submit" class="btn btn-primary pull-right">Add to cart <span id="total">(0$)</span>
+                <button type="submit" class="btn btn-primary pull-right">Add toppers to cart? <span id="total">(0$)</span>
                 </button>
+                                <a href="{{url_for('cart')}}" class="btn btn-danger pull-right">Checkout</a>
                 {% for m in menu %}
-                {% if not m.is_topping %}
+                                    {% if m.is_topping %}
                 <table class="table">
                     <h3 id="{{m.title}}" align="center" class="pull-right">
                         {{m.title}}
@@ -135,23 +109,20 @@ color:white;
 </div>
 
 <script>
-var total_price = 0;
+var total_price = {{tprice}};
 var total_span = document.getElementById('total');
-var total_price_field = document.getElementById('tprice');
-
+total_price = parseInt(total_price);
+total_span.innerHTML = "("+total_price+"$)";
 function calculatePrice(item){
 if(item.checked){
 price = item.getAttribute('price');
 total_price = total_price + parseInt(price);
 total_span.innerHTML = "";
 total_span.innerHTML = "("+total_price+"$)";
-total_price_field.value= total_price;
-
 }else if(!(item.checked && total_price <= 0)){
 total_price = total_price - price;
 total_span.innerHTML = "";
 total_span.innerHTML = "("+total_price+"$)";
-total_price_field.value= total_price;
 }
 }
 

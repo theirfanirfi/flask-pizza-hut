@@ -34,6 +34,8 @@ class Menu(db.Model):
     __tablename__ = 'menu'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
+    is_topping = db.Column(db.Boolean, default=False)
+    has_toppings = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     menuitems = db.relationship('MenuItems', backref="menu", lazy='dynamic')
     cart = db.relationship('Cart', backref="menu", lazy='dynamic')

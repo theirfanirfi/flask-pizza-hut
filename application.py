@@ -72,7 +72,14 @@ admin.add_view(AdminModelView(Cart, db.session, "Orders"))
 @login_required
 def index():
     menu = Menu.query.join(MenuItems).all()
-    return render_template('index.html',menu=menu)
+    return render_template('index.html', menu=menu)
+
+
+# @app.route("/toppers")
+# @login_required
+# def toppers():
+#     menu = Menu.query.filter_by(is_topping=True).join(MenuItems).all()
+#     return render_template('toppers.html', menu=menu)
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -136,11 +143,12 @@ def logout():
 @login_required
 def add_to_cart():
     user = current_user
-    items = request.form.getlist('items');
+    items = request.form.getlist('items')
+    total_price = request.form.get('total_price')
+    has_toppings = False
     if not (len(items) >0):
         flash('Select items first','danger')
         return redirect(request.referrer)
-
 
     for item in items:
         mitem = MenuItems.query.filter_by(id=item).first()
@@ -152,11 +160,19 @@ def add_to_cart():
         try:
             db.session.add(cart)
             db.session.commit()
+            menu = Menu.query.filter_by(id=mitem.menu_id).first()
+            if menu.has_toppings:
+                has_toppings = True
         except Exception as e:
             flash('Error: '+str(e),'danger')
             return redirect(request.referrer)
-    flash('Items added to cart, you can checkout now.','success')
-    return redirect("/cart")
+
+    if has_toppings:
+        menu = Menu.query.filter_by(is_topping=True).join(MenuItems).all()
+        return render_template('toppers.html',tprice=total_price, menu=menu)
+    else:
+        flash('Items added to cart, you can checkout now.','success')
+        return redirect("/cart")
 
 
 @app.route('/cart')
