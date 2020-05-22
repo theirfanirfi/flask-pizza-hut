@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b87c1a31-17fd-4362-aa1e-ebc998c599b5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask_session/c3ad153279662e5502680a29e5e62283" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/c3ad153279662e5502680a29e5e62283" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/toppers.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/toppers.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask_session/e238ce7730e1abe7e8fcf95cf5e8338f" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/e238ce7730e1abe7e8fcf95cf5e8338f" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
