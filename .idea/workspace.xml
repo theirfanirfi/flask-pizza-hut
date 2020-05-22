@@ -6,9 +6,11 @@
       <change beforePath="$PROJECT_DIR$/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/application.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask_session/c3ad153279662e5502680a29e5e62283" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/c3ad153279662e5502680a29e5e62283" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask_session/e238ce7730e1abe7e8fcf95cf5e8338f" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/e238ce7730e1abe7e8fcf95cf5e8338f" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/cart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/email_confirmation_cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/email_confirmation_cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/myorders.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/myorders.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/toppers.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/toppers.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

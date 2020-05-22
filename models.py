@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     role = db.Column(db.String(150), nullable=False, default="customer")  # customer | admin
     #menus = db.relationship('Menu', backref="user", lazy='dynamic')
     cart = db.relationship('Cart', backref="user", lazy='dynamic')
+    topper = db.relationship('Topper', backref="user", lazy='dynamic')
 
     def __repr__(self):
         return f"{self.firstname}"
@@ -63,16 +64,36 @@ class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Float, nullable=False)
     ordered_size = db.Column(db.String(40), nullable=False)
+    is_topper_in_cart = db.Column(db.Boolean, default=False)
     item_id = db.Column(db.Integer,db.ForeignKey('menu_items.id'), default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), default=0)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'), default=0)
     checkout = db.Column(db.String(40), default="Not confirmed")
 
-    def __init__(self,item_id,user_id,menu_id, price, size):
+    def __init__(self,item_id,user_id,menu_id, price, size,is_topper_in_cart):
         self.item_id = item_id
         self.user_id = user_id
         self.menu_id = menu_id
         self.price = price
         self.ordered_size = size
+        self.is_topper_in_cart = is_topper_in_cart
+
+class Topper(db.Model):
+    __tablename = 'topper'
+    id = db.Column(db.Integer, primary_key=True)
+    price = db.Column(db.Float, nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    is_topper_in_cart = db.Column(db.Boolean, default=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), default=0)
+    menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'), default=0)
+    checkout = db.Column(db.String(40), default="Not confirmed")
+
+    def __init__(self,item_id,user_id,menu_id, price, size,is_topper_in_cart):
+        self.item_id = item_id
+        self.user_id = user_id
+        self.menu_id = menu_id
+        self.price = price
+        self.ordered_size = size
+        self.is_topper_in_cart = is_topper_in_cart
 
 

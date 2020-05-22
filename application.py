@@ -148,7 +148,7 @@ def add_to_cart():
     price = request.form.get('price')
     pizza_size = request.form.get('pizza_size')
     has_toppings = False
-    limit = 3
+    limit = 0
     if not (len(items) >0):
         flash('Select items first','danger')
         return redirect(request.referrer)
@@ -159,7 +159,7 @@ def add_to_cart():
             flash('Invalid item added to cart','danger')
             return redirect(request.referrer)
 
-        cart = Cart(item_id=item,user_id=user.id,menu_id=mitem.menu_id, price=price, size=pizza_size)
+        cart = Cart(item_id=item,user_id=user.id,menu_id=mitem.menu_id, price=price, size=pizza_size, is_topper_in_cart=False)
         try:
             db.session.add(cart)
             db.session.commit()
@@ -177,6 +177,36 @@ def add_to_cart():
     else:
         flash('Items added to cart, you can checkout now.','success')
         return redirect("/cart")
+
+
+
+@app.route('/addtopperstocart',methods=['POST'])
+@login_required
+def add_toppers_to_cart():
+    user = current_user
+    items = request.form.getlist('items')
+    if not (len(items) >0):
+        flash('Select items first','danger')
+        return redirect(request.referrer)
+
+    for item in items:
+        mitem = MenuItems.query.filter_by(id=item).first()
+        if not mitem:
+            flash('Invalid item added to cart','danger')
+            return redirect(request.referrer)
+
+        cart = Cart(item_id=item,user_id=user.id,menu_id=mitem.menu_id, price=mitem.small_size_price, size="topper", is_topper_in_cart=True)
+        try:
+            db.session.add(cart)
+            db.session.commit()
+        except Exception as e:
+            flash('Error: '+str(e),'danger')
+            return redirect(request.referrer)
+
+    flash('Items added to cart, you can checkout now.','success')
+    return redirect("/cart")
+
+
 
 
 @app.route('/cart')
@@ -201,7 +231,7 @@ def send_email():
     total_items = 0
     for c in cart:
         total_items +=1
-        total_price += c.menu_items.price
+        total_price += c.price
 
     msg = Message(subject="Pizza Hut Oder Confirmation",sender=str(os.getenv('EMAIL_USER')),recipients=[user.email], body="Pizza hut order")
     msg.html = render_template('email_confirmation_cart.html', cart=cart, total_price=total_price, total_items=total_items)

@@ -54,14 +54,18 @@
                 <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Size</th>
                     <th>Price</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for c in cart %}
                 <tr>
-                    <td>{{c.menu_items.item_title}}</td>
-                    <td class="price">{{c.menu_items.small_size_price}}$</td>
+                    <td>{{c.menu_items.item_title}} {% if c.is_topper_in_cart %} (topper) {% endif %} </td>
+                    <td>{{c.ordered_size}}</td>
+                    <td class="price">
+                    {{c.price}}
+                $</td>
                 </tr>
                 {% endfor %}
 

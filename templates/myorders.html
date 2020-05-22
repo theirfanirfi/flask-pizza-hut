@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cart</title>
+    <title>My Orders</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -61,7 +61,7 @@
                 {% for c in cart %}
                 <tr>
                     <td>{{c.menu_items.item_title}}</td>
-                    <td class="price">{{c.menu_items.price}}$</td>
+                    <td class="price">{{c.price}}$</td>
                 </tr>
                 {% endfor %}
 

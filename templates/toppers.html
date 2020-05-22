@@ -65,7 +65,7 @@ color:white;
 <div class="container" style="margin-top:40px;">
     <div class="row">
         <div class="col-md-12">
-            <form method="post" action="{{url_for('add_to_cart')}}">
+            <form method="post" action="{{url_for('add_toppers_to_cart')}}">
                 <button type="submit" class="btn btn-primary pull-right">Add toppers to cart? <span id="total">(0$)</span>
                 </button>
                                 <a href="{{url_for('cart')}}" class="btn btn-danger pull-right">Checkout</a>
@@ -77,18 +77,18 @@ color:white;
                     </h3>
                     <thead>
                     <tr>
-                        <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Add to Cart</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for n in m.menuitems %}
                     <tr>
                         <td>{{n.item_title}}</td>
-                        <td>${{n.small_size_price}}   <input type="checkbox" pizza_size="small" class="form-control" name="items" price="{{n.price}}"
-                                   value="{{n.id}}" onchange="calculatePrice(this);"/> </td>
-                        <td>${{n.large_size_price}}   <input type="checkbox" pizza_size="large" class="form-control" name="items" price="{{n.price}}"
+                        <td> ${{n.small_size_price}}</td>
+                        <td>
+                        	<input type="checkbox" pizza_size="small" class="form-control" name="items" price="{{n.small_size_price}}"
                                    value="{{n.id}}" onchange="calculatePrice(this);"/></td>
                     </tr>
                     {% endfor %}
@@ -114,21 +114,26 @@ total_price = parseInt(total_price);
 total_span.innerHTML = "("+total_price+"$)";
 
 function calculatePrice(item){
-if(checked_toppers < limit){
+if(item.checked && checked_toppers < limit){
 checked_toppers++;
-if(item.checked){
+console.log("toppers inc: "+checked_toppers);
 price = item.getAttribute('price');
 total_price = total_price + parseInt(price);
 total_span.innerHTML = "";
 total_span.innerHTML = "("+total_price+"$)";
 }else if(!(item.checked && total_price <= 0)){
 total_price = total_price - price;
+
+item.checked = false;
 total_span.innerHTML = "";
 total_span.innerHTML = "("+total_price+"$)";
 }
-}else {
-item.checked = false;
+
+if(!item.checked && checked_toppers == limit){
+checked_toppers--;
+console.log("below if toppers: "+checked_toppers);
 }
+
 
 }
 
