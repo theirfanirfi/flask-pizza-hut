@@ -108,31 +108,35 @@ color:white;
 var total_price = {{tprice}};
 total_price = parseInt(total_price);
 limit = {{limit}};
-checked_toppers = 0;
 var total_span = document.getElementById('total');
 total_price = parseInt(total_price);
 total_span.innerHTML = "("+total_price+"$)";
-
+console.log("limit: "+limit);
 function calculatePrice(item){
-if(item.checked && checked_toppers < limit){
-checked_toppers++;
-console.log("toppers inc: "+checked_toppers);
+
+var length_of_checked_checkboxes = document.querySelectorAll('input[type="checkbox"]:checked').length;
+console.log(length_of_checked_checkboxes);
 price = item.getAttribute('price');
+
+if(length_of_checked_checkboxes <= limit){
+
+if(item.checked){
 total_price = total_price + parseInt(price);
+console.log("inc price: "+price);
+
 total_span.innerHTML = "";
 total_span.innerHTML = "("+total_price+"$)";
 }else if(!(item.checked && total_price <= 0)){
 total_price = total_price - price;
-
-item.checked = false;
+console.log("dec price: "+price);
 total_span.innerHTML = "";
 total_span.innerHTML = "("+total_price+"$)";
 }
 
-if(!item.checked && checked_toppers == limit){
-checked_toppers--;
-console.log("below if toppers: "+checked_toppers);
+}else {
+item.checked = false;
 }
+
 
 
 }

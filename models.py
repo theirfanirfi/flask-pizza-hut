@@ -52,7 +52,7 @@ class MenuItems(db.Model):
     item_title = db.Column(db.String(128))
     toppers_limit = db.Column(db.Integer)
     small_size_price = db.Column(db.Float, nullable=False)
-    large_size_price = db.Column(db.Float, nullable=False)
+    large_size_price = db.Column(db.Float, nullable=True, default=0)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'))
     cart = db.relationship('Cart', backref="menu_items", lazy='dynamic')
 
